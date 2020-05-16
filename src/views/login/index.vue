@@ -13,6 +13,9 @@
         v-model="user.mobile"
         name="手机号"
         placeholder="请输入手机号"
+        type="number"
+        maxlength="11"
+        :rules="userFormRules.mobile"
       >
         <i slot="left-icon" class="iconfont iconshouji"></i>
       </van-field>
@@ -20,6 +23,9 @@
         v-model="user.code"
         name="验证码"
         placeholder="请输入验证码"
+        type="number"
+        maxlength="6"
+        :rules="userFormRules.code"
       >
         <i slot="left-icon" class="iconfont iconyanzhengma"></i>
         <template #button>
@@ -47,6 +53,20 @@ export default {
       user: {
         mobile: '13911111111', // 手机号
         code: '246810' // 验证码
+      },
+      userFormRules: {
+        mobile: [{
+          required: true, message: '手机号不能为空'
+        }, {
+          pattern: /^1[3|5|7|8]\d{9}$/,
+          message: '手机号格式错误'
+        }],
+        code: [{
+          required: true, message: '验证码不能为空'
+        }, {
+          pattern: /^\d{6}$/,
+          message: '验证码格式错误'
+        }]
       }
     }
   },
@@ -61,6 +81,8 @@ export default {
         duration: 0 // 默认 2000 毫秒，为 0 则持续展示
       })
       // 2. 表单验证
+      // 2.1 给 vant-field 组件配置 rules 验证规则
+      // 2.2 表单提交的时候会自动触发表单验证，验证通过会触发 submit 事件，验证失败则不会触发 submit 事件
       // 3. 提交数据，请求登录
       try {
         const res = await login(user)
