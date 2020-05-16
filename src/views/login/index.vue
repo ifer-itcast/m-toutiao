@@ -45,8 +45,8 @@ export default {
   data () {
     return {
       user: {
-        mobile: '', // 手机号
-        code: '' // 验证码
+        mobile: '13911111111', // 手机号
+        code: '246810' // 验证码
       }
     }
   },
@@ -55,16 +55,23 @@ export default {
     async onSubmit (values) {
       // 1. 获取表单数据
       const user = this.user
+      this.$toast.loading({
+        message: '登录中...',
+        forbidClick: true, // 禁用背景点击
+        duration: 0 // 默认 2000 毫秒，为 0 则持续展示
+      })
       // 2. 表单验证
       // 3. 提交数据，请求登录
       try {
         const res = await login(user)
         console.log(res)
+        // 任何一个 toast 被调用，都会把之前的 toast 给关闭
+        this.$toast.success('登录成功')
       } catch (err) {
         if (err.response.status === 400) {
-          console.log('手机号或验证码错误')
+          this.$toast.fail('手机号或验证码错误')
         } else {
-          console.log('登录失败，请稍后重试', err)
+          this.$toast.fail('登录失败，请稍后重试')
         }
       }
       // 4. 根据响应结果做相应的操作
