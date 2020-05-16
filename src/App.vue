@@ -20,7 +20,7 @@ export default {
 
 <style lang="less">
 .box {
-  width: 200px;
+  width: 750px;
   height: 100px;
   background-color: pink;
 }
