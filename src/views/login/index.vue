@@ -99,8 +99,8 @@ export default {
       // 2.2 表单提交的时候会自动触发表单验证，验证通过会触发 submit 事件，验证失败则不会触发 submit 事件
       // 3. 提交数据，请求登录
       try {
-        const res = await login(user)
-        console.log(res)
+        const { data } = await login(user)
+        this.$store.commit('setUser', data.data)
         // 任何一个 toast 被调用，都会把之前的 toast 给关闭
         this.$toast.success('登录成功')
       } catch (err) {
