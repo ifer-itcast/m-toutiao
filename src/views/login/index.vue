@@ -4,7 +4,9 @@
     <van-nav-bar
       title="登录"
       class="page-nav-bar"
-    />
+    >
+      <van-icon slot="left" name="cross" @click="$router.back()"/>
+    </van-nav-bar>
     <!-- /导航栏 -->
     <!-- 登录表单 -->
     <van-form @submit="onSubmit" ref="loginForm">
