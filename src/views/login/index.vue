@@ -105,6 +105,8 @@ export default {
         this.$store.commit('setUser', data.data)
         // 任何一个 toast 被调用，都会把之前的 toast 给关闭
         this.$toast.success('登录成功')
+        // back 不严谨，公共优化的时候再优化
+        this.$router.back()
       } catch (err) {
         if (err.response.status === 400) {
           this.$toast.fail('手机号或验证码错误')
