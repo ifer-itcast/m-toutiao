@@ -6,6 +6,40 @@
         <span class="text">登录 / 注册</span>
       </div>
     </div>
+    <div class="header user-info">
+      <div class="base-info">
+        <div class="left">
+          <van-image
+            class="avatar"
+            round
+            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            fit="cover"
+          />
+          <span class="name">黑马头条号</span>
+        </div>
+        <div class="right">
+          <van-button size="mini" round>编辑资料</van-button>
+        </div>
+      </div>
+      <div class="data-status">
+        <div class="data-item">
+          <span class="count">10</span>
+          <span class="text">头条</span>
+        </div>
+        <div class="data-item">
+          <span class="count">10</span>
+          <span class="text">关注</span>
+        </div>
+        <div class="data-item">
+          <span class="count">10</span>
+          <span class="text">粉丝</span>
+        </div>
+        <div class="data-item">
+          <span class="count">10</span>
+          <span class="text">获赞</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -46,6 +80,54 @@ export default {
       .text {
         font-size: 28px;
         color: #fff;
+      }
+    }
+  }
+  .user-info {
+    .base-info {
+      height: 230px;
+      padding: 76px 32px 23px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .left {
+        display: flex;
+        align-items: center;
+        .avatar{
+          width: 132px;
+          height: 132px;
+          margin-right: 23px;
+          border: 4px solid #fff;
+        }
+        .name {
+          font-size: 30px;
+          color: #fff;
+        }
+      }
+      .right {
+        .van-button{
+          padding-right: 10px;
+          padding-left: 10px;
+        }
+      }
+    }
+    .data-status {
+      display: flex;
+      .data-item {
+        height: 130px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        color: #fff;
+        .count {
+          font-size: 36px;
+        }
+        .text {
+          font-size: 23px;
+        }
       }
     }
   }
