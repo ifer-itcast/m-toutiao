@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <!-- 搜索栏 -->
-    <van-nav-bar class="page-nav-bar">
+    <van-nav-bar class="page-nav-bar" fixed>
       <van-button
         class="search-btn"
         slot="title"
@@ -61,6 +61,7 @@ export default {
 
 <style scoped lang='less'>
 .home-container {
+  padding-top: 174px;
   padding-bottom: 100px;
   /deep/ .van-nav-bar__title {
     max-width: unset;
@@ -78,6 +79,11 @@ export default {
   /deep/ .channel-tabs {
     .van-tabs__wrap {
       height: 82px;
+      position: fixed;
+      top: 92px;
+      right: 0;
+      left: 0;
+      z-index: 1;
     }
     .van-tab {
       min-width: 187.5px; // 750 / 4
