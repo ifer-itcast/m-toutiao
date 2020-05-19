@@ -14,7 +14,11 @@
     <!-- /搜索栏 -->
     <!-- 频道列表 -->
     <van-tabs v-model="active" animated swipeable class="channel-tabs">
-      <van-tab :title="channel.name" v-for="channel in channels" :key="channel.id">{{channel.name}}</van-tab>
+      <van-tab :title="channel.name" v-for="channel in channels" :key="channel.id">
+        <!-- 文章列表 -->
+        <article-list :channel="channel"/>
+        <!-- /文章列表 -->
+      </van-tab>
       <div slot="nav-right" class="placeholder"></div>
       <div slot="nav-right" class="hamburger-btn">
         <i class="iconfont icongengduo"></i>
@@ -26,9 +30,13 @@
 
 <script>
 import { getUserChannels } from '@/api/user'
+import ArticleList from './components/article-list'
+
 export default {
   name: 'HomeIndex',
-
+  components: {
+    ArticleList
+  },
   data () {
     return {
       active: 0,
@@ -42,7 +50,6 @@ export default {
     async loadChannels () {
       try {
         const { data } = await getUserChannels()
-        console.log(data.data.channels)
         this.channels = data.data.channels
       } catch (err) {
         this.$toast('获取频道数据失败')
@@ -54,6 +61,7 @@ export default {
 
 <style scoped lang='less'>
 .home-container {
+  padding-bottom: 100px;
   /deep/ .van-nav-bar__title {
     max-width: unset;
   }
