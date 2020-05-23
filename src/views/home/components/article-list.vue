@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="article-list">
     <van-pull-refresh v-model="isRefreshLoading" @refresh="onRefresh" :success-text="refreshSuccessText" success-duration="1500">
       <van-list
         v-model="loading"
@@ -9,7 +9,12 @@
         error-text="请求失败，点击重新加载"
         @load="onLoad"
       >
-        <van-cell v-for="(article, index) in list" :key="index" :title="article.title" />
+        <!-- <van-cell v-for="(article, index) in list" :key="index" :title="article.title" /> -->
+        <article-item
+          v-for="(article, index) in list"
+          :key="index"
+          :article="article"
+        />
       </van-list>
     </van-pull-refresh>
   </div>
@@ -17,8 +22,13 @@
 
 <script>
 import { getArticles } from '@/api/article'
+import ArticleItem from '@/components/article-item'
+
 export default {
   name: '',
+  components: {
+    ArticleItem
+  },
   props: {
     channel: {
       type: Object,
@@ -98,5 +108,8 @@ export default {
 </script>
 
 <style scoped lang='less'>
-
+.article-list {
+  height: 79vh;
+  overflow-y: auto;
+}
 </style>
