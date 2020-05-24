@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { getAllChannels, addUserChannel } from '@/api/channel'
+import { getAllChannels, addUserChannel, deleteUserChannel } from '@/api/channel'
 import { mapState } from 'vuex'
 import { setItem } from '@/utils/storage'
 
@@ -132,18 +132,35 @@ export default {
     onMyChannelClick (channel, index) {
       if (this.isEdit) {
         // 编辑状态，删除频道
+        // 1. 固定频道，则不允许删除
         if (this.fixedChannels.includes(channel.id)) {
-          // 固定频道，则不允许删除
           return
         }
+        // 2. 删除频道项
+        this.myChannels.splice(index, 1)
+        // 3. 如果删除的是激活频道之前的频道，则更新激活的频道项
         if (index <= this.active) {
           // 让激活频道的索引减 1
           this.$emit('update-active', this.active - 1)
         }
-        this.myChannels.splice(index, 1)
+        // 4. 处理持久化
+        this.deleteChannel(channel)
       } else {
         // 非编辑状态，切换频道，false 代表不显示弹框
         this.$emit('update-active', index, false)
+      }
+    },
+    async deleteChannel (channel) {
+      if (this.user) {
+        // 已登录，将数据同步到后台
+        try {
+          await deleteUserChannel(channel.id)
+        } catch (err) {
+          this.$toast('操作失败，请稍后重试')
+        }
+      } else {
+        // 未登录，将数据同步到本地
+        setItem('TOUTIAO_CHANNELS', this.myChannels)
       }
     }
   }
