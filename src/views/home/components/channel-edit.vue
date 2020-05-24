@@ -52,7 +52,10 @@
 </template>
 
 <script>
-import { getAllChannels } from '@/api/channel'
+import { getAllChannels, addUserChannel } from '@/api/channel'
+import { mapState } from 'vuex'
+import { setItem } from '@/utils/storage'
+
 export default {
   name: 'ChannelEdit',
   components: {},
@@ -87,6 +90,7 @@ export default {
     //   })
     //   return channels
     // }
+    ...mapState(['user']),
     // 计算属性会观测内部依赖数据的变化，如果依赖数据发生变化，则计算属性会重新执行
     recommendChannels () {
       // 我的频道中不包括循环时的那一个频道，那就要
@@ -107,8 +111,23 @@ export default {
         this.$toast('数据获取失败')
       }
     },
-    onAddChannel (channel) {
+    async onAddChannel (channel) {
       this.myChannels.push(channel)
+      // 数据持久化处理
+      if (this.user) {
+        try {
+          // 已登录就把数据保存到后台
+          await addUserChannel({
+            id: channel.id, // 频道ID
+            seq: this.myChannels.length// 从 1 开始的序号
+          })
+        } catch (err) {
+          this.$toast('保存失败，请稍后重试')
+        }
+      } else {
+        // 未登录把数据保存到本地
+        setItem('TOUTIAO_CHANNELS', this.myChannels)
+      }
     },
     onMyChannelClick (channel, index) {
       if (this.isEdit) {
