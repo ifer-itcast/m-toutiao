@@ -28,8 +28,9 @@
     <van-grid :gutter="10" class="recommend-grid">
       <van-grid-item
         class="grid-item"
-        v-for="value in 8"
-        :key="value" text="文字"
+        v-for="(channel, index) in recommendChannels"
+        :key="index"
+        :text="channel.name"
         icon="plus"
       />
     </van-grid>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import { getAllChannels } from '@/api/channel'
 export default {
   name: 'ChannelEdit',
   components: {},
@@ -53,10 +55,43 @@ export default {
   },
   data () {
     return {
+      allChannels: []
     }
   },
-
-  methods: {}
+  computed: {
+    // recommendChannels () {
+    //   const channels = []
+    //   // 我的频道中不包括循环时的那一个频道，那就要
+    //   this.allChannels.forEach(channel => {
+    //     const ret = this.myChannels.find(myChannel => {
+    //       return myChannel.id === channel.id
+    //     })
+    //     if (!ret) {
+    //       channels.push(channel)
+    //     }
+    //   })
+    //   return channels
+    // }
+    recommendChannels () {
+      // 我的频道中不包括循环时的那一个频道，那就要
+      return this.allChannels.filter(channel => {
+        return !this.myChannels.find(myChannel => myChannel.id === channel.id)
+      })
+    }
+  },
+  created () {
+    this.loadAllChannels()
+  },
+  methods: {
+    async loadAllChannels () {
+      try {
+        const { data } = await getAllChannels()
+        this.allChannels = data.data.channels
+      } catch (err) {
+        this.$toast('数据获取失败')
+      }
+    }
+  }
 }
 </script>
 

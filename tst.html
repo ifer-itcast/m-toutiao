@@ -5,34 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    div {
-      width: 200px;
-      height: 200px;
-    }
-    .one {
+    .box {
+      width: 100px;
+      height: 100px;
+      padding: 10px;
       position: relative;
-      top: 200px;
-      left: 200px;
-      background-color: red;
-    }
-    .two {
       background-color: green;
+      border: 10px solid #000;
     }
-    .thr {
-      background-color: blue;
-    }
-    .fou {
-      position: relative;
-      bottom: 200px;
-      left: 200px;
-      background-color: yellow;
+    .box span {
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      position: absolute;
+      left: 0
     }
   </style>
 </head>
 <body>
-  <div class="one"></div>
-  <div class="two"></div>
-  <div class="thr"></div>
-  <div class="fou"></div>
+  <div class="box"><span></span></div>
 </body>
 </html>
