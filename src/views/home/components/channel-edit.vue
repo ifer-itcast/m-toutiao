@@ -4,20 +4,32 @@
     <van-cell :border="false">
       <div slot="title" class="title-text">我的频道</div>
       <!-- 默认插槽就会怼到右边的内容区域 -->
-      <van-button class="edit-btn" type="danger" plain round size="mini">编辑</van-button>
+      <van-button
+        class="edit-btn"
+        type="danger"
+        plain
+        round
+        size="mini"
+        @click="isEdit = !isEdit"
+      >{{isEdit ? '完成' : '编辑'}}</van-button>
     </van-cell>
     <van-grid :gutter="10" class="my-grid">
       <van-grid-item
-        icon="clear"
         class="grid-item"
         v-for="(channel, index) in myChannels"
         :key="index"
+        @click="onMyChannelClick(channel, index)"
       >
-       <span
-        class="text"
-        :class="{active: index === active}"
-        slot="text"
-      >{{channel.name}}</span>
+        <van-icon
+          slot="icon"
+          name="clear"
+          v-show="isEdit && !fixedChannels.includes(channel.id)"
+        ></van-icon>
+        <span
+          class="text"
+          :class="{active: index === active}"
+          slot="text"
+        >{{channel.name}}</span>
       </van-grid-item>
     </van-grid>
     <!-- /我的频道 -->
@@ -32,6 +44,7 @@
         :key="index"
         :text="channel.name"
         icon="plus"
+        @click="onAddChannel(channel)"
       />
     </van-grid>
     <!-- /频道推荐 -->
@@ -55,7 +68,9 @@ export default {
   },
   data () {
     return {
-      allChannels: []
+      allChannels: [],
+      isEdit: false, // 控制编辑状态的展示，即 x 按钮
+      fixedChannels: [0] // 固定频道不允许删除
     }
   },
   computed: {
@@ -72,6 +87,7 @@ export default {
     //   })
     //   return channels
     // }
+    // 计算属性会观测内部依赖数据的变化，如果依赖数据发生变化，则计算属性会重新执行
     recommendChannels () {
       // 我的频道中不包括循环时的那一个频道，那就要
       return this.allChannels.filter(channel => {
@@ -89,6 +105,17 @@ export default {
         this.allChannels = data.data.channels
       } catch (err) {
         this.$toast('数据获取失败')
+      }
+    },
+    onAddChannel (channel) {
+      this.myChannels.push(channel)
+    },
+    onMyChannelClick (channel, index) {
+      if (this.isEdit) {
+        // 编辑状态，删除频道
+      } else {
+        // 非编辑状态，切换频道
+        this.$emit('update-active', index)
       }
     }
   }
@@ -123,6 +150,9 @@ export default {
       }
       .active {
         color: red;
+      }
+      .van-grid-item__icon-wrapper {
+        position: unset;
       }
     }
   }

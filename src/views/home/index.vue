@@ -36,6 +36,7 @@
       <channel-edit
         :my-channels="channels"
         :active="active"
+        @update-active="onUpdateActive"
       />
     </van-popup>
     <!-- /频道编辑弹出层 -->
@@ -71,6 +72,10 @@ export default {
       } catch (err) {
         this.$toast('获取频道数据失败')
       }
+    },
+    onUpdateActive (index) {
+      this.active = index
+      this.isChennelEditShow = false
     }
   }
 }
