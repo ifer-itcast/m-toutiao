@@ -7,7 +7,18 @@
       <van-button class="edit-btn" type="danger" plain round size="mini">编辑</van-button>
     </van-cell>
     <van-grid :gutter="10" class="my-grid">
-      <van-grid-item icon="clear" class="grid-item" v-for="value in 8" :key="value" text="文字" />
+      <van-grid-item
+        icon="clear"
+        class="grid-item"
+        v-for="(channel, index) in myChannels"
+        :key="index"
+      >
+       <span
+        class="text"
+        :class="{active: index === active}"
+        slot="text"
+      >{{channel.name}}</span>
+      </van-grid-item>
     </van-grid>
     <!-- /我的频道 -->
     <!-- 频道推荐 -->
@@ -29,7 +40,17 @@
 <script>
 export default {
   name: 'ChannelEdit',
-
+  components: {},
+  props: {
+    myChannels: {
+      type: Array,
+      required: true
+    },
+    active: {
+      type: Number,
+      required: true
+    }
+  },
   data () {
     return {
     }
@@ -60,9 +81,13 @@ export default {
     .van-grid-item__content {
       white-space: nowrap;
       background-color: #f4f5f6;
-      .van-grid-item__text {
+      .van-grid-item__text, .text {
         font-size: 28px;
         color: #222;
+        margin-top: 0;
+      }
+      .active {
+        color: red;
       }
     }
   }
@@ -85,9 +110,6 @@ export default {
         .van-icon-plus {
           font-size: 28px;
           margin-right: 6px;
-        }
-        .van-grid-item__text {
-          margin-top: 0;
         }
       }
     }
