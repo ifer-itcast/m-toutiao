@@ -1,7 +1,7 @@
 <template>
   <div class="search-container">
     <!-- 搜索栏 -->
-    <form action="/">
+    <form class="search-form" action="/">
       <van-search
         v-model="searchText"
         show-action
@@ -15,13 +15,17 @@
     <!-- /搜索栏 -->
 
     <!-- 搜索结果 -->
-    <search-result v-if="isResultShow"/>
+    <search-result
+      v-if="isResultShow"
+      :search-text="searchText"
+    />
     <!-- /搜索结果 -->
 
     <!-- 搜索提示 -->
     <search-suggestion
       v-else-if="searchText"
       :search-text="searchText"
+      @search="onSearch"
     />
     <!-- /搜索提示 -->
 
@@ -52,7 +56,8 @@ export default {
 
   methods: {
     onSearch (val) {
-      // 敲回车或进行搜索时触发
+      // 敲回车或者点击搜索联想列表时触发
+      this.searchText = val
       this.isResultShow = true
     },
     onCancel () {
@@ -64,8 +69,16 @@ export default {
 
 <style scoped lang="less">
 .search-container {
+  padding-top: 108px;
   .van-search__action {
     color: #fff;
+  }
+  .search-form {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
   }
 }
 </style>

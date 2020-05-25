@@ -4,6 +4,7 @@
       v-for="(text, index) in suggustions"
       :key="index"
       icon="search"
+      @click="$emit('search', text)"
     >
       <div slot="title" v-html="highlight(text)"></div>
     </van-cell>
