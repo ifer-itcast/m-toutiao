@@ -1,22 +1,52 @@
 <template>
   <div class="serach-suggestion">
-    <van-cell title="黑马程序员..." icon="search"></van-cell>
-    <van-cell title="黑马程序员..." icon="search"></van-cell>
-    <van-cell title="黑马程序员..." icon="search"></van-cell>
-    <van-cell title="黑马程序员..." icon="search"></van-cell>
+    <van-cell
+      v-for="(text, index) in suggustions"
+      :key="index"
+      :title="text"
+      icon="search"
+    ></van-cell>
   </div>
 </template>
 
 <script>
+import { getSearchSuggestions } from '@/api/search'
+
 export default {
   name: 'SearchSuggestion',
-
-  data () {
-    return {
+  components: {},
+  props: {
+    searchText: {
+      type: String,
+      required: true
     }
   },
-
-  methods: {}
+  data () {
+    return {
+      suggustions: [] // 搜索提示、建议列表
+    }
+  },
+  computed: {},
+  watch: {
+    searchText: {
+      // 当 searchText 发生改变的时候就会调用 handler 函数，handler 函数是固定的，不是瞎写的
+      handler (val) {
+        this.loadSearchSuggestion(val)
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    async loadSearchSuggestion (q) {
+      try {
+        const { data } = await getSearchSuggestions(q)
+        this.suggustions = data.data.options
+      } catch (error) {
+        console.log(error)
+        this.$toast('数据获取失败，请稍后重试')
+      }
+    }
+  }
 }
 </script>
 

@@ -19,7 +19,10 @@
     <!-- /搜索结果 -->
 
     <!-- 搜索提示 -->
-    <search-suggestion v-else-if="searchText"></search-suggestion>
+    <search-suggestion
+      v-else-if="searchText"
+      :search-text="searchText"
+    />
     <!-- /搜索提示 -->
 
     <!-- 搜索记录 -->
