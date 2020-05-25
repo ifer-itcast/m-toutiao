@@ -11,6 +11,7 @@
 
 <script>
 import { getSearchSuggestions } from '@/api/search'
+import { debounce } from 'lodash'
 
 export default {
   name: 'SearchSuggestion',
@@ -30,9 +31,13 @@ export default {
   watch: {
     searchText: {
       // 当 searchText 发生改变的时候就会调用 handler 函数，handler 函数是固定的，不是瞎写的
-      handler (val) {
+      // handler (val) {
+      //   this.loadSearchSuggestion(val)
+      // },
+      // 防抖：持续触发不执行，不触发的一段时间后才执行
+      handler: debounce(function (val) {
         this.loadSearchSuggestion(val)
-      },
+      }, 200),
       immediate: true
     }
   },
