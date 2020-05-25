@@ -1,11 +1,12 @@
 <template>
-  <div class="serach-suggestion">
+  <div class="search-suggestion">
     <van-cell
       v-for="(text, index) in suggustions"
       :key="index"
-      :title="text"
       icon="search"
-    ></van-cell>
+    >
+      <div slot="title" v-html="highlight(text)"></div>
+    </van-cell>
   </div>
 </template>
 
@@ -24,7 +25,8 @@ export default {
   },
   data () {
     return {
-      suggustions: [] // 搜索提示、建议列表
+      suggustions: [], // 搜索提示、建议列表
+      htmlStr: ''
     }
   },
   computed: {},
@@ -50,11 +52,20 @@ export default {
         console.log(error)
         this.$toast('数据获取失败，请稍后重试')
       }
+    },
+    highlight (text) {
+      const highlightStr = `<span class="active">${this.searchText}</span>`
+      const reg = new RegExp(this.searchText, 'gi')
+      return text.replace(reg, highlightStr)
     }
   }
 }
 </script>
 
 <style lang='less' scoped>
-
+.search-suggestion {
+  /deep/ span.active {
+    color: #3296fa;
+  }
+}
 </style>
