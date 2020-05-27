@@ -1,6 +1,17 @@
 <template>
+  <!-- :to="'/article/' + article.art_id" -->
+  <!-- :to="`/article/${article.art_id}`" -->
   <van-cell
     class="article-item"
+    :to="{
+      // 路由名称
+      name: 'article',
+      // 路由参数
+      params: {
+        // 属性名：路由设计中设计的动态参数名称
+        articleId: article.art_id
+      }
+    }"
   >
     <div slot="title" class="title van-multi-ellipsis--l2">{{article.title}}</div>
     <div slot="label">
