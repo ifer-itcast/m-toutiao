@@ -30,7 +30,10 @@
     <!-- /搜索提示 -->
 
     <!-- 搜索记录 -->
-    <search-history v-else/>
+    <search-history
+      v-else
+      :search-histories="searchHistories"
+    />
     <!-- /搜索记录 -->
 
   </div>
@@ -50,15 +53,22 @@ export default {
   data () {
     return {
       searchText: '',
-      isResultShow: false // 控制搜索结果的显示
+      isResultShow: false, // 控制搜索结果的显示
+      searchHistories: [] // 搜索的历史记录
     }
   },
 
   methods: {
     onSearch (val) {
       // 敲回车或者点击搜索联想列表时触发
-      this.searchText = val
-      this.isResultShow = true
+      this.searchText = val // 更新文本框内容
+      this.isResultShow = true // 渲染搜索结果
+
+      // 要求：不要有重复历史记录，最新的排在最前面
+      const flag = this.searchHistories.includes(val)
+      if (!flag) {
+        this.searchHistories.unshift(val) // 存储搜索历史记录
+      }
     },
     onCancel () {
       this.$router.back()
