@@ -33,9 +33,10 @@
     <search-history
       v-else
       :search-histories="searchHistories"
+      @clear-search-histories="searchHistories = []"
+      @search="onSearch"
     />
     <!-- /搜索记录 -->
-
   </div>
 </template>
 
