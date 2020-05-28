@@ -42,6 +42,7 @@
             size="small"
             v-if="article.is_followed"
             @click="onFollow"
+            :loading="followLoading"
           >已关注</van-button>
           <van-button
             v-else
@@ -52,6 +53,7 @@
             size="small"
             icon="plus"
             @click="onFollow"
+            :loading="followLoading"
           >关注</van-button>
         </van-cell>
         <!-- /用户信息 -->
@@ -130,7 +132,8 @@ export default {
     return {
       article: {}, // 文章详情
       loading: true, // 加载中的 loading 状态
-      errStatus: 0 // 失败的状态码
+      errStatus: 0, // 失败的状态码
+      followLoading: false
     }
   },
   computed: {},
@@ -196,6 +199,7 @@ export default {
     },
 
     async onFollow () {
+      this.followLoading = true // 展示按钮的 loading 状态
       try {
         if (this.article.is_followed) {
           // 那就取消关注
@@ -212,6 +216,7 @@ export default {
         }
         this.$toast(message)
       }
+      this.followLoading = false
     }
   }
 }
