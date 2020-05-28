@@ -38,7 +38,11 @@ export default {
       error: false
     }
   },
-
+  computed: {},
+  watch: {},
+  created () {
+    this.onLoad()
+  },
   methods: {
     // 评论测试：http://localhost:8080/#/article/137825
     async onLoad () {
@@ -53,6 +57,7 @@ export default {
         // 2. 将数据添加到列表中
         const { results } = data.data
         this.list.push(...results)
+        this.$emit('onload-success', data.data)
         // 3. 将 loading 设置为 false
         this.loading = false
         // 4. 判断是否还有数据
