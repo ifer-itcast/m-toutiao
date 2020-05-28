@@ -38,11 +38,18 @@
           <div slot="label" class="publish-date">{{ article.pubdate | relativeTime }}</div>
           <!-- 给组件添加的 class 默认会作用于组件的根节点 -->
           <!-- 模板中的 $event 就是事件参数 -->
+          <!-- 传递：:is-followed="article.is_followed" -->
+          <!-- 修改：@updateFollowed="article.is_followed=$event" -->
+          <!-- 如果有数据在子组件中既想用也想改，可以用 v-model 优化 -->
+          <!-- 如果有多个数据呢？可以使用 sync -->
+          <!-- v-model 相当于是下面两句的简写 -->
+          <!-- value="article.is_followed" -->
+          <!-- @input="article.is_followed=$event" -->
+          <!-- 如果需要修改 v-model 的规则，可以通过子组件的 model 属性来配置修改 -->
           <follow-user
             class="follow-btn"
-            :is-followed="article.is_followed"
             :user-id="article.aut_id"
-            @updateFollowed="article.is_followed=$event"
+            v-model="article.is_followed"
           />
           <!-- <van-button
             class="follow-btn"
