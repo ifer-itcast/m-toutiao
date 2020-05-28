@@ -8,3 +8,12 @@ export const getArticles = params => {
     params
   })
 }
+
+// 获取文章详情
+export const getArticleById = articleId => {
+  return request({
+    method: 'GET',
+    // 实际上这里的 articleId 是一个对象，和字符串进行拼接时这里会自动调用 toString() 进行转换
+    url: `/app/v1_0/articles/${articleId}`
+  })
+}
