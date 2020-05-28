@@ -41,7 +41,7 @@ export default {
         }
         // 更新视图
         this.$emit('input', !this.value)
-        // this.value 的改变不是立即的，所以下面使用了 !this.value
+        // 这里依赖 this.value 修改后的值，this.status 的改变不是立即的，所以下面使用了 !this.value
         this.$toast.success(!this.value ? '收藏成功' : '取消收藏')
       } catch (err) {
         this.$toast.fail('操作失败，请重试！')
