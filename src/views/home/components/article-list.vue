@@ -25,7 +25,7 @@ import { getArticles } from '@/api/article'
 import ArticleItem from '@/components/article-item'
 
 export default {
-  name: '',
+  name: 'ArticleList',
   components: {
     ArticleItem
   },

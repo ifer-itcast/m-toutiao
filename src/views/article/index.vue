@@ -83,6 +83,7 @@
         <!-- 文章评论列表 -->
         <comment-list
           :source="article.art_id"
+          :list="commentList"
           @onload-success="totalCommentCount=$event.total_count"
         />
         <!-- /文章评论列表 -->
@@ -94,6 +95,7 @@
             type="default"
             round
             size="small"
+            @click="isPostShow = true"
           >写评论</van-button>
           <van-icon
             name="comment-o"
@@ -113,6 +115,17 @@
           <van-icon name="share" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
+        <!-- 评论弹出层 -->
+        <van-popup
+          v-model="isPostShow"
+          position="bottom"
+        >
+          <comment-post
+            :target="article.art_id"
+            @post-success="onPostSuccess"
+          />
+        </van-popup>
+        <!-- /评论弹出层 -->
       </div>
       <!-- /加载完成-文章详情 -->
 
@@ -144,6 +157,7 @@ import FollowUser from '@/components/follow-user'
 import CollectArticle from '@/components/collect-article'
 import LikeArticle from '@/components/like-article'
 import CommentList from './components/comment-list'
+import CommentPost from './components/comment-post'
 
 export default {
   name: 'ArticleIndex',
@@ -151,7 +165,8 @@ export default {
     FollowUser,
     CollectArticle,
     LikeArticle,
-    CommentList
+    CommentList,
+    CommentPost
   },
   props: {
     articleId: {
@@ -165,7 +180,9 @@ export default {
       loading: true, // 加载中的 loading 状态
       errStatus: 0, // 失败的状态码
       followLoading: false,
-      totalCommentCount: 0
+      totalCommentCount: 0,
+      isPostShow: false, // 控制发布评论的显示状态
+      commentList: [] // 评论列表
     }
   },
   computed: {},
@@ -228,6 +245,12 @@ export default {
           })
         }
       })
+    },
+
+    onPostSuccess (data) {
+      // 关闭弹层，将发布内容显示到列表顶部
+      this.isPostShow = false
+      this.commentList.unshift(data.new_obj)
     }
   }
 }
