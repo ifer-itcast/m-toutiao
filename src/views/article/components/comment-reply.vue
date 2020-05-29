@@ -16,6 +16,7 @@
       <!-- 评论回复列表 -->
       <van-cell title="全部回复"/>
       <comment-list
+        :list="commentList"
         :source="comment.com_id"
         type='c'
       />
@@ -28,8 +29,9 @@
     <!-- /回复评论 -->
     <!-- 回复评论弹框 -->
     <van-popup v-model="isPostShow" position="bottom">
-      <commnet-post
+      <comment-post
         :target="comment.com_id"
+        @post-success="onPostSuccess"
       />
     </van-popup>
     <!-- /回复评论弹框 -->
@@ -39,14 +41,14 @@
 <script>
 import CommentItem from './comment-item'
 import CommentList from './comment-list'
-import CommnetPost from './comment-post'
+import CommentPost from './comment-post'
 
 export default {
   name: 'CommentReply',
   components: {
     CommentItem,
     CommentList,
-    CommnetPost
+    CommentPost
   },
   props: {
     comment: {
@@ -56,13 +58,23 @@ export default {
   },
   data () {
     return {
-      isPostShow: false
+      isPostShow: false,
+      commentList: [] // 评论的回复列表
     }
   },
   computed: {},
   watch: {},
   created () {},
-  methods: {}
+  methods: {
+    onPostSuccess (data) {
+      // 更新回复的数量
+      this.comment.reply_count++
+      // 关闭弹层
+      this.isPostShow = false
+      // 将最新回复的内容展示到列表的顶部
+      this.commentList.unshift(data.new_obj)
+    }
+  }
 }
 </script>
 
