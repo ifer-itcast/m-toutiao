@@ -1,10 +1,12 @@
 <template>
+  <!-- 只有 List 在可视范围内才会检查滚动位置触发 onLoad -->
   <div class="comment-list">
     <van-list
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
       :error="error"
+      :immediate-check="false"
       error-text="加载失败，请点击重试"
       @load="onLoad"
     >
@@ -57,6 +59,8 @@ export default {
   computed: {},
   watch: {},
   created () {
+    // 手动 onLoad 的话，它不会自动开始初始的 loading，所以要手动的开启初始 loading
+    this.loading = true
     this.onLoad()
   },
   methods: {
