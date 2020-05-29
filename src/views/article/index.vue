@@ -155,7 +155,10 @@
       position="bottom"
       style="height: 100%"
     >
-      hello
+      <comment-reply
+        :comment="currentComment"
+        @close="isReplyShow=false"
+      />
     </van-popup>
     <!-- /评论回复 -->
   </div>
@@ -169,6 +172,7 @@ import CollectArticle from '@/components/collect-article'
 import LikeArticle from '@/components/like-article'
 import CommentList from './components/comment-list'
 import CommentPost from './components/comment-post'
+import CommentReply from './components/comment-reply'
 
 export default {
   name: 'ArticleIndex',
@@ -177,7 +181,8 @@ export default {
     CollectArticle,
     LikeArticle,
     CommentList,
-    CommentPost
+    CommentPost,
+    CommentReply
   },
   props: {
     articleId: {
@@ -194,7 +199,8 @@ export default {
       totalCommentCount: 0,
       isPostShow: false, // 控制发布评论的显示状态
       commentList: [], // 评论列表
-      isReplyShow: false
+      isReplyShow: false,
+      currentComment: {} // 当前点击回复的评论项
     }
   },
   computed: {},
@@ -266,7 +272,7 @@ export default {
     },
 
     onReplyClick (comment) {
-      console.log(comment)
+      this.currentComment = comment
       // 显示评论回复弹出层
       this.isReplyShow = true
     }
