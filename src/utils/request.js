@@ -8,6 +8,7 @@ import JSONBig from 'json-bigint'
 
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn/',
+  // baseURL: 'http://api-toutiao-web.itheima.net/',
   // 自定义后端返回的原始数据
   transformResponse: [function (data) {
     try {

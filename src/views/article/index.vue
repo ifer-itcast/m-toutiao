@@ -150,13 +150,16 @@
     </div>
 
     <!-- 评论回复 -->
+    <!-- 弹出层是懒渲染的，只有在第一次展示的时候才会渲染里面的内容，之后的关闭和显示，只是在切换内容的显示和隐藏 -->
     <van-popup
       v-model="isReplyShow"
       position="bottom"
       style="height: 100%"
     >
+      <!-- v-if="isReplyShow" 解决【只有第一次】加载列表生效的问题 -->
       <comment-reply
         :comment="currentComment"
+        v-if="isReplyShow"
         @close="isReplyShow=false"
       />
     </van-popup>

@@ -35,6 +35,13 @@ export default {
       type: Array,
       // 数组或对象的默认值，要通过 function 给
       default: () => []
+    },
+    type: {
+      type: String,
+      validator (value) {
+        return ['a', 'c'].includes(value)
+      },
+      default: 'a'
     }
   },
   data () {
@@ -54,12 +61,13 @@ export default {
   },
   methods: {
     // 评论测试：http://localhost:8080/#/article/137825
+    // 获取文章的评论，和获取评论的回复是同一个接口，唯一的区别是请求参数不一样（type 和 source）
     async onLoad () {
       try {
         // 1. 请求获取数据
         const { data } = await getComments({
-          type: 'a', // 评论类型 a-对文章的评论，c-对评论的评论
-          source: this.source, // 文章 id 或评论 id
+          type: this.type, // 评论类型 a-对文章的评论，c-对评论的评论
+          source: this.source.toString(), // 文章 id 或评论 id
           offset: this.offset, // 获取下一页数据的标记
           limit: this.limit// 每次获取数据数量
         })
