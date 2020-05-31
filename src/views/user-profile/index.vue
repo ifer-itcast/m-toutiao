@@ -84,6 +84,7 @@
     >
      <update-photo
       :img="img"
+      @close="isUpdatePhotoShow = false"
      />
     </van-popup>
     <!-- /编辑头像 -->
