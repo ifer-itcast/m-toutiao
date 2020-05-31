@@ -3,7 +3,7 @@
     <img :src="img" class="img" ref="img">
     <div class="toolbar">
       <div class="cancel" @click="$emit('close')">取消</div>
-      <div class="confirm">完成</div>
+      <div class="confirm" @click="onConfirm">完成</div>
     </div>
   </div>
 </template>
@@ -11,6 +11,7 @@
 <script>
 import 'cropperjs/dist/cropper.css'
 import Cropper from 'cropperjs'
+import { updateUserPhoto } from '@/api/user'
 export default {
   name: 'UpdatePhoto',
   props: {
@@ -21,10 +22,11 @@ export default {
   },
   data () {
     return {
+      cropper: null
     }
   },
   mounted () {
-    const cropper = new Cropper(this.$refs.img, {
+    this.cropper = new Cropper(this.$refs.img, {
       viewMode: 1, // 查看模式，裁剪框只能在图像内移动
       dragMode: 'move', // 后面的图片才可以拖动
       aspectRatio: 1, // 正方形
@@ -33,9 +35,35 @@ export default {
       cropBoxResizable: false, // 固定截图区域的大小，不允许拉大拉小
       background: false // 不需要背景
     })
-    console.log(cropper)
   },
-  methods: {}
+  methods: {
+    onConfirm () {
+      // console.log(this.cropper.getData())
+      this.cropper.getCroppedCanvas().toBlob(blob => {
+        this.$toast.loading({
+          message: '保存中...',
+          forbidClick: true, // 禁止背景点击
+          duration: 0 // 持续展示
+        })
+        this.updateUserPhoto(blob)
+      })
+    },
+    async updateUserPhoto (blob) {
+      try {
+        const formData = new FormData()
+        formData.append('photo', blob)
+        const { data } = await updateUserPhoto(formData)
+        // 关闭弹出层
+        this.$emit('close')
+        // 更新视图
+        this.$emit('update-photo', data.data.photo)
+        // 提示成功
+        this.$toast.success('更新成功')
+      } catch (err) {
+        this.$toast.fail('更新失败')
+      }
+    }
+  }
 }
 </script>
 
